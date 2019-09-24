@@ -9,6 +9,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+// 选项配置
 type prom struct {
 	Appname   string
 	Idc       string
@@ -19,13 +20,15 @@ type prom struct {
 
 var Wrapper *prom
 
+// 选项配置
 type Opts struct {
-	AppName         string
-	Idc             string
-	WatchPath       map[string]struct{}
-	HistogramBucket []float64
+	AppName         string              // 项目名称
+	Idc             string              // 机房名称
+	WatchPath       map[string]struct{} // 监控路径
+	HistogramBucket []float64           // 桶距配置
 }
 
+// 初始化
 func Init(opts Opts) {
 	if strings.TrimSpace(opts.AppName) == "" {
 		panic("Prometheus Opts.AppName Can't Be Empty")
@@ -66,6 +69,7 @@ func Init(opts Opts) {
 	Wrapper = p
 }
 
+// 启动监听server，收集metrics数据
 func MetricsServerStart(path string, port int) {
 	// prometheus metrics path
 	go func() {

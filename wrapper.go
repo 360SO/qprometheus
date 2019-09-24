@@ -6,25 +6,29 @@ import (
 	"github.com/pkg/errors"
 )
 
+// QPS 统计
 type QPSRecord struct {
-	Times  float64
-	Api    string
-	Module string
-	Method string
-	Code   int
+	Times  float64 // 统计次数
+	Api    string  // 统计路径
+	Module string  // 所属模块
+	Method string  // 请求方法
+	Code   int     // 状态码
 }
 
+// 延迟数据 统计
 type LatencyRecord struct {
-	Time   float64
-	Api    string
-	Module string
-	Method string
+	Time   float64 // 花费时间
+	Api    string  // 统计路径
+	Module string  // 所属模块
+	Method string  // 请求方法
 }
 
+// 获取wrapper句柄
 func GetWrapper() *prom {
 	return Wrapper
 }
 
+// QPS记录
 func (p *prom) QpsCountLog(r QPSRecord) (ret bool, err error) {
 	if strings.TrimSpace(r.Api) == "" {
 		return ret, errors.New("QPSRecord.Api Can't Be Empty")
@@ -51,6 +55,7 @@ func (p *prom) QpsCountLog(r QPSRecord) (ret bool, err error) {
 	return true, nil
 }
 
+// 延迟记录
 func (p *prom) LatencyLog(r LatencyRecord) (ret bool, err error) {
 	if r.Time <= 0 {
 		return ret, errors.New("LatencyRecord.Time Must Greater Than 0")
