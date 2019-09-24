@@ -20,12 +20,11 @@ type prom struct {
 var Wrapper *prom
 
 type Opts struct {
-	AppName   string
-	Idc       string
-	WatchPath map[string]struct{}
+	AppName         string
+	Idc             string
+	WatchPath       map[string]struct{}
 	HistogramBucket []float64
 }
-
 
 func Init(opts Opts) {
 	if strings.TrimSpace(opts.AppName) == "" {

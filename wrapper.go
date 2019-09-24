@@ -7,16 +7,16 @@ import (
 )
 
 type QPSRecord struct {
-	Times float64
-	Api string
+	Times  float64
+	Api    string
 	Module string
 	Method string
-	Code int
+	Code   int
 }
 
 type LatencyRecord struct {
-	Time float64
-	Api string
+	Time   float64
+	Api    string
 	Module string
 	Method string
 }
