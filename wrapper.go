@@ -8,6 +8,7 @@ import (
 
 // QPS 统计
 type QPSRecord struct {
+	Idc    string  // 机房
 	Times  float64 // 统计次数
 	Api    string  // 统计路径
 	Module string  // 所属模块
@@ -17,6 +18,7 @@ type QPSRecord struct {
 
 // 延迟数据 统计
 type LatencyRecord struct {
+	Idc    string  // 机房
 	Time   float64 // 花费时间
 	Api    string  // 统计路径
 	Module string  // 所属模块
@@ -50,7 +52,11 @@ func (p *prom) QpsCountLog(r QPSRecord) (ret bool, err error) {
 		r.Code = 200
 	}
 
-	p.counter.WithLabelValues(p.Appname, r.Module, r.Api, r.Method, strconv.Itoa(r.Code), p.Idc).Add(r.Times)
+	if r.Idc == "" {
+		r.Idc = p.Idc
+	}
+
+	p.counter.WithLabelValues(p.Appname, r.Module, r.Api, r.Method, strconv.Itoa(r.Code), r.Idc).Add(r.Times)
 
 	return true, nil
 }
@@ -69,7 +75,11 @@ func (p *prom) LatencyLog(r LatencyRecord) (ret bool, err error) {
 		r.Method = "GET"
 	}
 
-	p.histogram.WithLabelValues(p.Appname, r.Module, r.Api, r.Method, p.Idc).Observe(r.Time)
+	if r.Idc == "" {
+		r.Idc = p.Idc
+	}
+
+	p.histogram.WithLabelValues(p.Appname, r.Module, r.Api, r.Method, r.Idc).Observe(r.Time)
 
 	return true, nil
 }
