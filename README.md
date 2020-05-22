@@ -5,7 +5,7 @@ prometheus wrapper in golang only for so.com team
 ## Usage
 
 
-```
+``` golang
 // you should init prometheus in your main.go first
 func main() {
     // ...
